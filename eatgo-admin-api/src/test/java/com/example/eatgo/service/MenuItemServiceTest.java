@@ -41,7 +41,7 @@ class MenuItemServiceTest {
 
         menuItemService.bulkUpdate(1L, menuItems);
 
-        verify(menuItemRepository, times(2)).save(any());;
+        verify(menuItemRepository, times(2)).save(any());
     }
 
     @Test

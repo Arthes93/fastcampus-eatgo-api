@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -30,8 +31,13 @@ class ReviewControllerTest {
 
     @Test
     public void 리뷰를_생성한다() throws Exception {
-        given(reviewService.addReview(1004L, any())).willReturn(
-                Review.builder().id(1004L).name("JOKER").score(3).description("Mat-it-da"). build());
+        given(reviewService.addReview(eq(1L), any())).willReturn(
+                Review.builder()
+                        .id(1004L)
+                        .name("JOKER")
+                        .score(3)
+                        .description("Mat-it-da")
+                        .build());
 
 
         mockMvc.perform(post("/restaurants/1/reviews")
@@ -40,7 +46,7 @@ class ReviewControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/restaurants/1/reviews/1004"));
 
-        verify(reviewService).addReview(1004L, any());
+        verify(reviewService).addReview(eq(1L), any());
     }
 
     @Test
@@ -50,6 +56,6 @@ class ReviewControllerTest {
                 .content("{}"))
                 .andExpect(status().isBadRequest());
 
-        verify(reviewService, never()).addReview(1004L, any());
+        verify(reviewService, never()).addReview(eq(1004L), any());
     }
 }
