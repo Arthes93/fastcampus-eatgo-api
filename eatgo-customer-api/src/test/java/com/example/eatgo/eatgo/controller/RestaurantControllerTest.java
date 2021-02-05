@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -41,17 +40,19 @@ class RestaurantControllerTest {
     private RestaurantService restaurantService;
 
     @Test
-    public void list를_확인한다() throws Exception {
+    public void 레스토랑_전체를_확인한다() throws Exception {
         List<Restaurant> restaurants = new ArrayList<>();
         restaurants.add(Restaurant.builder()
                 .id(1004L)
+                .categoryId(1L)
                 .name("JOKER House")
                 .address("Seoul")
                 .build());
 
-        given(restaurantService.getRestaurants("Seoul")).willReturn(restaurants);
+        Long categoryId = 1L;
+        given(restaurantService.getRestaurants("Seoul", categoryId)).willReturn(restaurants);
 
-        ResultActions resultActions = mockMvc.perform(get("/restaurants?region=Seoul"));
+        ResultActions resultActions = mockMvc.perform(get("/restaurants?region=Seoul&category=1"));
 
         resultActions
                 .andExpect(status().isOk())
@@ -65,13 +66,14 @@ class RestaurantControllerTest {
         List<Restaurant> restaurants = new ArrayList<>();
         restaurants.add(Restaurant.builder()
                 .id(1004L)
+                .categoryId(1L)
                 .name("JOKER House")
                 .address("Seoul")
                 .build());
 
-        given(restaurantService.getRestaurants("Seoul")).willReturn(restaurants);
+        given(restaurantService.getRestaurants("Seoul", 1L)).willReturn(restaurants);
 
-        ResultActions resultActions = mockMvc.perform(get("/restaurants?region=Seoul"));
+        ResultActions resultActions = mockMvc.perform(get("/restaurants?region=Seoul&category=1"));
 
         resultActions
                 .andExpect(status().isOk())
@@ -84,6 +86,7 @@ class RestaurantControllerTest {
     public void 특정_가게_상세정보를_가져온다() throws Exception {
         Restaurant restaurant = Restaurant.builder()
                 .id(1004L)
+                .categoryId(1L)
                 .name("JOKER House")
                 .address("Seoul")
                 .build();

@@ -59,11 +59,15 @@ class RestaurantServiceTest {
         Restaurant restaurant = Restaurant.builder()
                 .id(1004L)
                 .address("Seoul")
+                .categoryId(1L)
                 .name("Bob zip")
                 .build();
         restaurants.add(restaurant);
 
-        given(restaurantRepository.findAllByAddressContaining("Seoul")).willReturn(restaurants);
+        // address와 category를 사용해 검색한다.
+        given(restaurantRepository
+                .findAllByAddressContainingAndCategoryId("Seoul", 1L))
+                .willReturn(restaurants);
 
         given(restaurantRepository.findById(1004L))
                 .willReturn(Optional.of(restaurant));
@@ -92,7 +96,10 @@ class RestaurantServiceTest {
 
     @Test
     public void 모든_레스토랑을_가져온다() {
-        List<Restaurant> restaurants = restaurantService.getRestaurants("Seoul");
+        String region = "Seoul";
+        Long categoryId = 1L;
+
+        List<Restaurant> restaurants = restaurantService.getRestaurants(region, categoryId);
         Restaurant restaurant = restaurants.get(0);
         assertThat(restaurant.getId()).isEqualTo(1004L);
     }
@@ -151,6 +158,7 @@ class RestaurantServiceTest {
     public void 레스토랑정보_업데이트() throws Exception {
         Restaurant restaurant = Restaurant.builder()
                 .id(1004L)
+                .categoryId(1L)
                 .name("Bob zip")
                 .address("Seoul")
                 .build();

@@ -41,6 +41,7 @@ class RestaurantControllerTest {
         List<Restaurant> restaurants = new ArrayList<>();
         restaurants.add(Restaurant.builder()
                 .id(1004L)
+                .categoryId(1L)
                 .name("JOKER House")
                 .address("Seoul")
                 .build());
@@ -60,6 +61,7 @@ class RestaurantControllerTest {
     public void 특정_가게_상세정보를_가져온다() throws Exception {
         Restaurant restaurant = Restaurant.builder()
                 .id(1004L)
+                .categoryId(1L)
                 .name("JOKER House")
                 .address("Seoul")
                 .build();
@@ -90,6 +92,7 @@ class RestaurantControllerTest {
         String Seoul = "Seoul";
 
         Restaurant restaurant = Restaurant.builder()
+                .categoryId(1L)
                 .name(BobZip)
                 .address(Seoul)
                 .build();
@@ -112,6 +115,7 @@ class RestaurantControllerTest {
         String Seoul = "Seoul";
 
         Restaurant restaurant = Restaurant.builder()
+                .categoryId(1L)
                 .name(BobZip)
                 .address(Seoul)
                 .build();
@@ -146,6 +150,7 @@ class RestaurantControllerTest {
         String Busan = "Busan";
 
         Restaurant restaurant = Restaurant.builder()
+                .categoryId(1L)
                 .name(JOKER)
                 .address(Busan)
                 .build();

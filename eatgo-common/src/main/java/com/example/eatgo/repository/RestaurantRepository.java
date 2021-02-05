@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     List<Restaurant> findAllByAddressContaining(String region);
+    List<Restaurant> findAllByAddressContainingAndCategoryId(String region, Long categoryId);
 }
