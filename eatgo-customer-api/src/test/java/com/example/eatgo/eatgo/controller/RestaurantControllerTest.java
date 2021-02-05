@@ -1,5 +1,6 @@
-package com.example.eatgo.controller;
+package com.example.eatgo.eatgo.controller;
 
+import com.example.eatgo.controller.RestaurantController;
 import com.example.eatgo.domain.MenuItem;
 import com.example.eatgo.domain.Restaurant;
 import com.example.eatgo.domain.Review;
@@ -7,17 +8,14 @@ import com.example.eatgo.exception.RestaurantNotFoundException;
 import com.example.eatgo.service.RestaurantService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,6 +67,22 @@ class RestaurantControllerTest {
                 .name("JOKER House")
                 .address("Seoul")
                 .build();
+        // 메뉴 정보를 생성
+        MenuItem menuItem = MenuItem.builder()
+                .name("Kimchi")
+                .build();
+        // 리뷰 정보를 생성
+        Review review = Review.builder()
+                .name("JOKER")
+                .score(5)
+                .description("Great!")
+                .build();
+        // 레스토랑 객체에 메뉴 정보들을 저장한다.
+        restaurant.setMenuItems(Arrays.asList(menuItem));
+        // 레스토랑 객체에 리뷰 정보들을 저장한다.
+        restaurant.setReviews(Arrays.asList(review));
+
+
         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant);
 
         ResultActions resultActions = mockMvc.perform(get("/restaurants/1004"));
@@ -77,95 +91,22 @@ class RestaurantControllerTest {
                 .andExpect(status().isOk())
                 // 레스토랑 정보가 들어있는지 확인한다.
                 .andExpect(content().string(containsString("\"id\":1004")))
-                .andExpect(content().string(containsString("\"name\":\"JOKER House\"")));
+                .andExpect(content().string(containsString("\"name\":\"JOKER House\"")))
+                // 메뉴 정보가 들어있는지 확인한다.
+                .andExpect(content().string(containsString("Kimchi")))
+                // 리뷰 정보가 들어있는지 확인한다.
+                .andExpect(content().string(containsString("Great!")))
+                .andDo(print());
+
     }
 
     @Test
-    public void 없는_페이지에대한_예외처리를_한다() throws Exception {
+    public void 없는_페이지에대한_예외처리를_한다() throws Exception{
         given(restaurantService.getRestaurant(404L)).willThrow(new RestaurantNotFoundException(404L));
         ResultActions resultActions = mockMvc.perform(get("/restaurants/404"));
 
         resultActions
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("{}"));
-    }
-
-    @Test
-    public void 새로운_레스토랑_저장하기() throws Exception {
-        String BobZip = "BobZip";
-        String Seoul = "Seoul";
-
-        Restaurant restaurant = Restaurant.builder()
-                .name(BobZip)
-                .address(Seoul)
-                .build();
-
-        String content = objectMapper.writeValueAsString(restaurant);
-
-        ResultActions resultActions = mockMvc.perform(post("/restaurants")
-                .content(content)
-                .contentType(MediaType.APPLICATION_JSON));
-
-        resultActions
-                .andExpect(status().isCreated())
-                .andDo(print());
-
-    }
-
-    @Test
-    public void 새로운_레스토랑_저장_및_조회하기() throws Exception {
-        String BobZip = "BobZip";
-        String Seoul = "Seoul";
-
-        Restaurant restaurant = Restaurant.builder()
-                .name(BobZip)
-                .address(Seoul)
-                .build();
-
-        String content = objectMapper.writeValueAsString(restaurant);
-
-        ResultActions postResultActions = mockMvc.perform(post("/restaurants")
-                .content(content)
-                .contentType(MediaType.APPLICATION_JSON));
-
-        postResultActions
-                .andExpect(status().isCreated())
-                .andDo(print());
-
-
-        List<Restaurant> restaurants = new ArrayList<>();
-        restaurants.add(restaurant);
-        given(restaurantService.getRestaurants()).willReturn(restaurants);
-
-        ResultActions getResultActions = mockMvc.perform(get("/restaurants"));
-
-        getResultActions
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value(BobZip))
-                .andExpect(jsonPath("$[0].address").value(Seoul))
-                .andDo(print());
-    }
-
-    @Test
-    public void 레스토랑정보_업데이트() throws Exception {
-        String JOKER = "JOKER Bar";
-        String Busan = "Busan";
-
-        Restaurant restaurant = Restaurant.builder()
-                .name(JOKER)
-                .address(Busan)
-                .build();
-
-        String content = objectMapper.writeValueAsString(restaurant);
-
-        ResultActions resultActions = mockMvc.perform(patch("/restaurants/1004")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content));
-
-        resultActions
-                .andExpect(status().isOk())
-                .andDo(print());
-
-        verify(restaurantService).updateRestaurant(1004L, JOKER, Busan);
     }
 }

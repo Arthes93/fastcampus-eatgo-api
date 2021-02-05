@@ -5,8 +5,6 @@ import com.example.eatgo.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
@@ -16,9 +14,5 @@ public class ReviewService {
         review.setRestaurantId(restaurantId);
         reviewRepository.save(review);
         return review;
-    }
-
-    public List<Review> getReviews() {
-         return reviewRepository.findAll();
     }
 }

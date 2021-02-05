@@ -18,6 +18,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
+    private final MenuItemRepository menuItemRepository;
+    private final ReviewRepository reviewRepository;
 
     // 전달받은 Restaurant정보를 저장하기 위한 서비스
     public Restaurant addRestaurant(Restaurant restaurant) {
@@ -36,6 +38,14 @@ public class RestaurantService {
 
         if (optional.isPresent()) {
             Restaurant restaurant = optional.get();
+
+            // 해당 restaurant id값을 갖는 모든 Menu들을 가져온다.
+            List<MenuItem> menuItems = menuItemRepository.findAllByRestaurantId(id);
+            restaurant.setMenuItems(menuItems);
+
+            // 해당 restaurant id값을 갖는 모든 review들을 가져온다.
+            List<Review> reviews = reviewRepository.findAllByRestaurantId(id);
+            restaurant.setReviews(reviews);
             return restaurant;
         }else{
             throw new RestaurantNotFoundException(id);
