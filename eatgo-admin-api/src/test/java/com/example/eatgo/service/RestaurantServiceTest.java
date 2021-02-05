@@ -51,7 +51,7 @@ class RestaurantServiceTest {
                 .build();
         restaurants.add(restaurant);
 
-        given(restaurantRepository.findAllByAddressContaining("Seoul")).willReturn(restaurants);
+        given(restaurantRepository.findAll()).willReturn(restaurants);
 
         given(restaurantRepository.findById(1004L))
                 .willReturn(Optional.of(restaurant));
@@ -59,7 +59,7 @@ class RestaurantServiceTest {
 
     @Test
     public void 모든_레스토랑을_가져온다() {
-        List<Restaurant> restaurants = restaurantService.getRestaurants("Seoul");
+        List<Restaurant> restaurants = restaurantService.getRestaurants();
         Restaurant restaurant = restaurants.get(0);
         assertThat(restaurant.getId()).isEqualTo(1004L);
     }

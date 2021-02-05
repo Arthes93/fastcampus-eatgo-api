@@ -45,29 +45,9 @@ class RestaurantControllerTest {
                 .address("Seoul")
                 .build());
 
-        given(restaurantService.getRestaurants("Seoul")).willReturn(restaurants);
+        given(restaurantService.getRestaurants()).willReturn(restaurants);
 
-        ResultActions resultActions = mockMvc.perform(get("/restaurants?region=Seoul"));
-
-        resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"id\":1004")))
-                .andExpect(content().string(containsString("\"name\":\"JOKER House\"")))
-                .andDo(print());
-    }
-
-    @Test
-    public void RequestHeader를_이용한_list를_확인한다() throws Exception {
-        List<Restaurant> restaurants = new ArrayList<>();
-        restaurants.add(Restaurant.builder()
-                .id(1004L)
-                .name("JOKER House")
-                .address("Seoul")
-                .build());
-
-        given(restaurantService.getRestaurants("Seoul")).willReturn(restaurants);
-
-        ResultActions resultActions = mockMvc.perform(get("/restaurants?region=Seoul"));
+        ResultActions resultActions = mockMvc.perform(get("/restaurants?region=Seoul&category=1"));
 
         resultActions
                 .andExpect(status().isOk())
@@ -149,9 +129,9 @@ class RestaurantControllerTest {
 
         List<Restaurant> restaurants = new ArrayList<>();
         restaurants.add(restaurant);
-        given(restaurantService.getRestaurants("Seoul")).willReturn(restaurants);
+        given(restaurantService.getRestaurants()).willReturn(restaurants);
 
-        ResultActions getResultActions = mockMvc.perform(get("/restaurants?region=Seoul"));
+        ResultActions getResultActions = mockMvc.perform(get("/restaurants"));
 
         getResultActions
                 .andExpect(status().isOk())
