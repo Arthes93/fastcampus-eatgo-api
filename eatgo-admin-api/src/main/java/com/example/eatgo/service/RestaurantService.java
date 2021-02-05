@@ -1,12 +1,8 @@
 package com.example.eatgo.service;
 
-import com.example.eatgo.domain.MenuItem;
 import com.example.eatgo.domain.Restaurant;
-import com.example.eatgo.domain.Review;
 import com.example.eatgo.exception.RestaurantNotFoundException;
-import com.example.eatgo.repository.MenuItemRepository;
 import com.example.eatgo.repository.RestaurantRepository;
-import com.example.eatgo.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,9 +21,8 @@ public class RestaurantService {
         return restaurant;
     }
 
-    public List<Restaurant> getRestaurants() {
-        List<Restaurant> restaurants = restaurantRepository.findAll();
-
+    public List<Restaurant> getRestaurants(String region) {
+        List<Restaurant> restaurants = restaurantRepository.findAllByAddressContaining(region);
         return restaurants;
     }
 

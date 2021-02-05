@@ -16,10 +16,4 @@ public class CategoryService {
         List<Category> categories = categoryRepository.findAll();
         return categories;
     }
-
-    public Category addCategory(String name) {
-        Category category = Category.builder().name(name).build();
-        categoryRepository.save(category);
-        return category;
-    }
 }

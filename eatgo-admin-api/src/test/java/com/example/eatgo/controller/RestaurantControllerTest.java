@@ -1,25 +1,19 @@
 package com.example.eatgo.controller;
 
-import com.example.eatgo.domain.MenuItem;
 import com.example.eatgo.domain.Restaurant;
-import com.example.eatgo.domain.Review;
 import com.example.eatgo.exception.RestaurantNotFoundException;
 import com.example.eatgo.service.RestaurantService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
@@ -51,9 +45,29 @@ class RestaurantControllerTest {
                 .address("Seoul")
                 .build());
 
-        given(restaurantService.getRestaurants()).willReturn(restaurants);
+        given(restaurantService.getRestaurants("Seoul")).willReturn(restaurants);
 
-        ResultActions resultActions = mockMvc.perform(get("/restaurants"));
+        ResultActions resultActions = mockMvc.perform(get("/restaurants?region=Seoul"));
+
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"id\":1004")))
+                .andExpect(content().string(containsString("\"name\":\"JOKER House\"")))
+                .andDo(print());
+    }
+
+    @Test
+    public void RequestHeader를_이용한_list를_확인한다() throws Exception {
+        List<Restaurant> restaurants = new ArrayList<>();
+        restaurants.add(Restaurant.builder()
+                .id(1004L)
+                .name("JOKER House")
+                .address("Seoul")
+                .build());
+
+        given(restaurantService.getRestaurants("Seoul")).willReturn(restaurants);
+
+        ResultActions resultActions = mockMvc.perform(get("/restaurants?region=Seoul"));
 
         resultActions
                 .andExpect(status().isOk())
@@ -135,9 +149,9 @@ class RestaurantControllerTest {
 
         List<Restaurant> restaurants = new ArrayList<>();
         restaurants.add(restaurant);
-        given(restaurantService.getRestaurants()).willReturn(restaurants);
+        given(restaurantService.getRestaurants("Seoul")).willReturn(restaurants);
 
-        ResultActions getResultActions = mockMvc.perform(get("/restaurants"));
+        ResultActions getResultActions = mockMvc.perform(get("/restaurants?region=Seoul"));
 
         getResultActions
                 .andExpect(status().isOk())

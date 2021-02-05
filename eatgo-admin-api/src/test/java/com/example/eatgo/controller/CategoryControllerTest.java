@@ -43,20 +43,4 @@ class CategoryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Korean Food")));
     }
-
-
-    @Test
-    public void 카테고리_생성하기() throws Exception {
-        Category category = Category.builder()
-                .name("Korean Food")
-                .build();
-
-        given(categoryService.addCategory("Korean Food")).willReturn(category);
-
-        mockMvc.perform(post("/categories")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"name\" :\"Korean Food\" }"))
-                .andExpect(status().isCreated())
-                .andExpect(content().string("{}"));
-    }
 }

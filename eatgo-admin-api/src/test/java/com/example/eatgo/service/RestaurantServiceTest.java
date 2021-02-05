@@ -1,19 +1,14 @@
 package com.example.eatgo.service;
 
-import com.example.eatgo.domain.MenuItem;
 import com.example.eatgo.domain.Restaurant;
-import com.example.eatgo.domain.Review;
 import com.example.eatgo.exception.RestaurantNotFoundException;
-import com.example.eatgo.repository.MenuItemRepository;
 import com.example.eatgo.repository.RestaurantRepository;
-import com.example.eatgo.repository.ReviewRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
@@ -22,14 +17,11 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class RestaurantServiceTest {
 
@@ -59,7 +51,7 @@ class RestaurantServiceTest {
                 .build();
         restaurants.add(restaurant);
 
-        given(restaurantRepository.findAll()).willReturn(restaurants);
+        given(restaurantRepository.findAllByAddressContaining("Seoul")).willReturn(restaurants);
 
         given(restaurantRepository.findById(1004L))
                 .willReturn(Optional.of(restaurant));
@@ -67,10 +59,8 @@ class RestaurantServiceTest {
 
     @Test
     public void 모든_레스토랑을_가져온다() {
-        List<Restaurant> restaurants = restaurantService.getRestaurants();
-
+        List<Restaurant> restaurants = restaurantService.getRestaurants("Seoul");
         Restaurant restaurant = restaurants.get(0);
-
         assertThat(restaurant.getId()).isEqualTo(1004L);
     }
 
