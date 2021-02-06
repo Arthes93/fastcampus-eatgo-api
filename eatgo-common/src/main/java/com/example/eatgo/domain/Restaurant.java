@@ -1,12 +1,11 @@
 package com.example.eatgo.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,11 +13,21 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Restaurant {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    // Category별로 Restaurant을 찾을 수 있도록 categoryId를 추가
+    @NotNull
+    private Long categoryId;
+
+    @NotEmpty
     private String name;
+
+    @NotEmpty
     private String address;
 
     @Transient
@@ -28,13 +37,6 @@ public class Restaurant {
     @Transient
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Review> reviews;
-
-    @Builder
-    private Restaurant(Long id, String name, String address){
-        this.id = id;
-        this.name = name;
-        this.address = address;
-    }
 
     public void addMenuItem(MenuItem menuItem){
         menuItems.add(menuItem);
