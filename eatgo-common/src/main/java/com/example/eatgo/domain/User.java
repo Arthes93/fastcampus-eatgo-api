@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class  User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
@@ -29,6 +29,8 @@ public class User {
     @NotNull
     private Long level;
 
+    @NotEmpty
+    private String password;
 
 
     public boolean isAdmin() {
