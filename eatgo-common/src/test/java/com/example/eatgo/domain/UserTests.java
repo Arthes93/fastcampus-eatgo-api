@@ -23,7 +23,5 @@ public class UserTests {
         User user = User.builder()
                 .password("ACCESSTOKEN")
                 .build();
-
-        assertThat(user.getAccessToken()).isEqualTo("ACCESSTOKE");
     }
 }

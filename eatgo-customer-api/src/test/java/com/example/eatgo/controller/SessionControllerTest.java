@@ -4,6 +4,8 @@ import com.example.eatgo.domain.User;
 import com.example.eatgo.exception.EmailNotExistedException;
 import com.example.eatgo.exception.PasswordWrongException;
 import com.example.eatgo.service.UserService;
+import com.example.eatgo.util.JwtUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -25,28 +28,47 @@ class SessionControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private JwtUtil jwtUtil;
 
     @Test
     @DisplayName("AccessToken을 반환하는지 확인한다.")
     public void create() throws Exception {
+        Long id = 1004L;
         String email = "tester@example.com";
         String password = "test";
+        String name = "Tester";
 
-        User mockUser = User.builder().password("ACCESSTOKEN").build();
+        User mockUser = User.builder()
+                .id(id)
+                .email(email)
+                .name(name)
+                .password(password)
+                .level(3L)
+                .build();
+
+        String content = objectMapper.writeValueAsString(mockUser);
 
         given(userService.authenticate(email, password)).willReturn(mockUser);
+        given(jwtUtil.createToken(id, name)).willReturn("header.payload.signature");
 
         ResultActions resultActions = mockMvc.perform(post("/session")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"email\":\"tester@example.com\",\"password\":\"test\"}"));
+//                .content("{\"email\":\"tester@example.com\",\"password\":\"test\"}")
+                .content(content)
+        );
 
         resultActions
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/session"))
                 // AccessToken을 사용하는지 확인한다.
-                .andExpect(content().string("{\"accessToken\":\"ACCESSTOKE\"}"));
+                .andExpect(content().string(containsString("{\"accessToken\":\"header.payload.signature\"}")));
 
 
         verify(userService).authenticate(eq(email), eq(password));

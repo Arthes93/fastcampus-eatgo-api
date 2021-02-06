@@ -16,7 +16,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -82,7 +81,7 @@ class UserServiceTest {
         String password = "test";
 
         User mockUser = User.builder()
-                .Id(1004L)
+                .id(1004L)
                 .email(email)
                 .name(name)
                 .password(password)
@@ -114,7 +113,7 @@ class UserServiceTest {
         String name = "Tester";
         String password = "x";
         User mockUser = User.builder()
-                .Id(1004L)
+                .id(1004L)
                 .email(email)
                 .name(name)
                 .password(password)

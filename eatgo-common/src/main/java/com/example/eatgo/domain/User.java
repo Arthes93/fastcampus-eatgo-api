@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 public class  User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     @NotEmpty
     private String email;
@@ -44,14 +44,5 @@ public class  User {
 
     public boolean isActive() {
         return level > 0L;
-    }
-
-    @JsonIgnore
-    public String getAccessToken() {
-        if(password == null){
-            return "";
-        }
-
-        return password.substring(0, 10);
     }
 }

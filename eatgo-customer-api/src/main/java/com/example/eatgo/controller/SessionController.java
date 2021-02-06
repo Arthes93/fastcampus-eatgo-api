@@ -4,6 +4,7 @@ import com.example.eatgo.controller.dto.SessionRequestDto;
 import com.example.eatgo.domain.User;
 import com.example.eatgo.service.UserService;
 import com.example.eatgo.controller.dto.SessionResponseDto;
+import com.example.eatgo.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,8 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class SessionController {
 
+    private final JwtUtil jwtUtil;
+
     private final UserService userService;
 
     @PostMapping("/session")
@@ -25,7 +28,7 @@ public class SessionController {
         User user = userService.authenticate(email, password);
 
         String url = "/session";
-        String accessToken = user.getAccessToken();
+        String accessToken = jwtUtil.createToken(user.getId(), user.getName());
 
         SessionResponseDto sessionResponseDto = SessionResponseDto.builder()
                 .accessToken(accessToken)

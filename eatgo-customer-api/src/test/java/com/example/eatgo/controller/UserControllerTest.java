@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -37,7 +36,7 @@ class UserControllerTest {
         String password = "test";
 
         User mockUser = User.builder()
-                .Id(1004L)
+                .id(1004L)
                 .email(email)
                 .password(password)
                 .name(name)

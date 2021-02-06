@@ -2,7 +2,6 @@ package com.example.eatgo.service;
 
 import com.example.eatgo.domain.User;
 import com.example.eatgo.repository.UserRepository;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -79,7 +77,7 @@ class UserServiceTest {
         String name = "Superman";
 
         User mockUser = User.builder()
-                .Id(id)
+                .id(id)
                 .name("Administrator")
                 .level(1L)
                 .email(email)
@@ -101,7 +99,7 @@ class UserServiceTest {
         String name = "Superman";
 
         User mockUser = User.builder()
-                .Id(id)
+                .id(id)
                 .level(level)
                 .email(email)
                 .name(name)
