@@ -1,6 +1,5 @@
-package com.example.eatgo.eatgo.controller;
+package com.example.eatgo.controller;
 
-import com.example.eatgo.controller.RestaurantController;
 import com.example.eatgo.domain.MenuItem;
 import com.example.eatgo.domain.Restaurant;
 import com.example.eatgo.domain.Review;

@@ -1,4 +1,4 @@
-package com.example.eatgo.eatgo.service;
+package com.example.eatgo.service;
 
 import com.example.eatgo.domain.MenuItem;
 import com.example.eatgo.domain.Restaurant;
@@ -7,7 +7,6 @@ import com.example.eatgo.exception.RestaurantNotFoundException;
 import com.example.eatgo.repository.MenuItemRepository;
 import com.example.eatgo.repository.RestaurantRepository;
 import com.example.eatgo.repository.ReviewRepository;
-import com.example.eatgo.service.RestaurantService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

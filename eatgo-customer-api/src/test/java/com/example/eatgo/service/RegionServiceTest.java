@@ -1,8 +1,7 @@
-package com.example.eatgo.eatgo.service;
+package com.example.eatgo.service;
 
 import com.example.eatgo.domain.Region;
 import com.example.eatgo.repository.RegionRepository;
-import com.example.eatgo.service.RegionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

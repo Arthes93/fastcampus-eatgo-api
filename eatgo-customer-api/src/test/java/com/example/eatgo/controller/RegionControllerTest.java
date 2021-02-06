@@ -1,6 +1,5 @@
-package com.example.eatgo.eatgo.controller;
+package com.example.eatgo.controller;
 
-import com.example.eatgo.controller.RegionController;
 import com.example.eatgo.domain.Region;
 import com.example.eatgo.service.RegionService;
 import org.junit.jupiter.api.Test;
