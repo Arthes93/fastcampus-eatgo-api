@@ -1,9 +1,9 @@
 package com.example.eatgo.controller;
 
 import com.example.eatgo.controller.dto.SessionRequestDto;
+import com.example.eatgo.controller.dto.SessionResponseDto;
 import com.example.eatgo.domain.User;
 import com.example.eatgo.service.UserService;
-import com.example.eatgo.controller.dto.SessionResponseDto;
 import com.example.eatgo.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +21,7 @@ public class SessionController {
 
     private final UserService userService;
 
+
     @PostMapping("/session")
     public ResponseEntity<SessionResponseDto> create(@RequestBody SessionRequestDto resource){
         String email = resource.getEmail();
@@ -28,7 +29,8 @@ public class SessionController {
         User user = userService.authenticate(email, password);
 
         String url = "/session";
-        String accessToken = jwtUtil.createToken(user.getId(), user.getName());
+        String accessToken = jwtUtil.createToken(user.getId(), user.getName(),
+                user.isRestaurantOwner() ? user.getRestaurantId() : null);
 
         SessionResponseDto sessionResponseDto = SessionResponseDto.builder()
                 .accessToken(accessToken)

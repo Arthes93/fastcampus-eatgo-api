@@ -15,7 +15,7 @@ public class UserTests {
                 .build();
 
         assertThat(user.getName()).isEqualTo("테스터");
-        assertThat(user.isAdmin()).isEqualTo(true);
+        assertThat(user.isAdmin()).isEqualTo(false);
     }
 
     @Test
@@ -23,5 +23,17 @@ public class UserTests {
         User user = User.builder()
                 .password("ACCESSTOKEN")
                 .build();
+    }
+
+    @Test
+    public void restaurantOwner(){
+        User user = User.builder().level(1L).build();
+
+        assertThat(user.isRestaurantOwner()).isEqualTo(false);
+
+        user.setRestaurantId(1004L);
+
+        assertThat(user.isRestaurantOwner()).isEqualTo(true);
+        assertThat(user.getRestaurantId()).isEqualTo(1004L);
     }
 }

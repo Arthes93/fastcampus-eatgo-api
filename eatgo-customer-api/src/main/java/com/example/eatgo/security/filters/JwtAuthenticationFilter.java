@@ -1,4 +1,4 @@
-package com.example.eatgo.filters;
+package com.example.eatgo.security.filters;
 
 import com.example.eatgo.util.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         super(authenticationManager);

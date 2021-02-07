@@ -1,6 +1,5 @@
 package com.example.eatgo.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -33,6 +32,12 @@ public class  User {
     @NotEmpty
     private String password;
 
+    private Long restaurantId;
+
+    public void setRestaurantId(Long restaurantId){
+        this.level = 50L;
+        this.restaurantId = restaurantId;
+    }
 
     public boolean isAdmin() {
         return level > 2L;
@@ -44,5 +49,9 @@ public class  User {
 
     public boolean isActive() {
         return level > 0L;
+    }
+
+    public boolean isRestaurantOwner() {
+        return level == 50L;
     }
 }

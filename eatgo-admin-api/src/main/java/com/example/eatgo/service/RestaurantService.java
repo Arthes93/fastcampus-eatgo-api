@@ -27,14 +27,15 @@ public class RestaurantService {
     }
 
     public Restaurant getRestaurant(Long id) {
-        Optional<Restaurant> optional = restaurantRepository.findById(id);
+        Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new RestaurantNotFoundException(id));
 
-        if (optional.isPresent()) {
-            Restaurant restaurant = optional.get();
-            return restaurant;
-        }else{
-            throw new RestaurantNotFoundException(id);
-        }
+        return restaurant;
+//        if (optional.isPresent()) {
+//            Restaurant restaurant = optional.get();
+//            return restaurant;
+//        }else{
+//            throw new RestaurantNotFoundException(id);
+//        }
     }
 
     @Transactional
