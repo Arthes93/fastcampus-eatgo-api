@@ -29,6 +29,8 @@ class ReviewControllerTest {
 
     @Test
     public void 리뷰를_생성한다() throws Exception {
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJUZXN0ZXIifQ.I4DNdunio2m54tfUEaXHC_E-gvCQo6ZhHO15Ewkat6U";
+
         given(reviewService.addReview(eq(1L), any())).willReturn(
                 Review.builder()
                         .id(1004L)
@@ -39,6 +41,7 @@ class ReviewControllerTest {
 
 
         mockMvc.perform(post("/restaurants/1/reviews")
+                .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"JOKER\", \"score\":3,\"description\" : \"Mat-it-da\"}"))
                 .andExpect(status().isCreated())
