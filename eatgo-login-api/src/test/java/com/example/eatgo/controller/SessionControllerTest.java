@@ -56,12 +56,51 @@ class SessionControllerTest {
         String content = objectMapper.writeValueAsString(mockUser);
 
         given(userService.authenticate(email, password)).willReturn(mockUser);
-        given(jwtUtil.createToken(id, name)).willReturn("header.payload.signature");
+        given(jwtUtil.createToken(id, name, null)).willReturn("header.payload.signature");
 
         ResultActions resultActions = mockMvc.perform(post("/session")
                 .contentType(MediaType.APPLICATION_JSON)
 //                .content("{\"email\":\"tester@example.com\",\"password\":\"test\"}")
                 .content(content)
+        );
+
+        resultActions
+                .andExpect(status().isCreated())
+                .andExpect(header().string("location", "/session"))
+                // AccessToken을 사용하는지 확인한다.
+                .andExpect(content().string(containsString("{\"accessToken\":\"header.payload.signature\"}")));
+
+
+        verify(userService).authenticate(eq(email), eq(password));
+    }
+
+    @Test
+    @DisplayName("AccessToken에 ResturantId를 넣 반환하는지 확인한다.")
+    public void createRestaurantOwner() throws Exception {
+        Long id = 1004L;
+        String email = "tester@example.com";
+        String password = "test";
+        String name = "Tester";
+        Long level = 50L;
+        Long restaurantId = 369L;
+
+        User mockUser = User.builder()
+                .id(id)
+                .email(email)
+                .name(name)
+                .password(password)
+                .level(level)
+                .restaurantId(restaurantId)
+                .build();
+
+        String content = objectMapper.writeValueAsString(mockUser);
+
+        given(userService.authenticate(email, password)).willReturn(mockUser);
+        given(jwtUtil.createToken(id, name, 369L)).willReturn("header.payload.signature");
+
+        ResultActions resultActions = mockMvc.perform(post("/session")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content)
         );
 
         resultActions

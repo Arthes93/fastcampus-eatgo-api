@@ -19,7 +19,7 @@ class JwtUtilTest {
 
     @Test @DisplayName("JWT를 생성한다.")
     public void createToken(){
-        String token = jwtUtil.createToken(1004L, "Tester");
+        String token = jwtUtil.createToken(1004L, "Tester", null);
         assertThat(token).contains(".");
     }
 
